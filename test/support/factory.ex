@@ -1,4 +1,4 @@
-defmodule Score.Factory do
+defmodule ScorerApi.Factory do
   @moduledoc """
   Factory for user
   """

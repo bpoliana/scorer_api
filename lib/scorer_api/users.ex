@@ -6,13 +6,13 @@ defmodule ScorerApi.Users do
   import Ecto.Query, warn: false
   alias ScorerApi.{Repo, Users.User}
 
-  def create_user(params \\ %{}) do
+  def create(params \\ %{}) do
     %User{}
     |> User.changeset(params)
     |> Repo.insert()
   end
 
-  def update_user(params) do
+  def update(params) do
     %User{}
     |> User.changeset(params)
     |> Repo.update()
