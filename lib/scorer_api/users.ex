@@ -28,9 +28,9 @@ defmodule ScorerApi.Users do
         user in User,
         where: user.points >= ^points,
         order_by: [:points],
-        limit: 1
+        limit: 2
       )
 
-    Repo.one(query)
+    Repo.all(query)
   end
 end
