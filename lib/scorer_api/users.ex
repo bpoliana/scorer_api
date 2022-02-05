@@ -12,8 +12,8 @@ defmodule ScorerApi.Users do
     |> Repo.insert()
   end
 
-  def update(params) do
-    %User{}
+  def update(%User{} = user, params) do
+    user
     |> User.changeset(params)
     |> Repo.update()
   end

@@ -10,7 +10,7 @@ defmodule ScorerApi.Users.UserTest do
   describe "changeset/2" do
     test "validates changeset" do
       user = insert(:user)
-      user_params = %{ points: 13 }
+      user_params = %{points: 13}
 
       assert changeset = %Ecto.Changeset{valid?: true} = User.changeset(%User{}, user_params)
       changes = changeset.changes
@@ -21,7 +21,7 @@ defmodule ScorerApi.Users.UserTest do
     test "validates the presence of all the fields" do
       assert %Ecto.Changeset{errors: errors} = User.changeset(%User{}, %{})
 
-      assert [ points: {"can't be blank", [validation: :required]} ] = errors
+      assert [points: {"can't be blank", [validation: :required]}] = errors
     end
 
     test "validates that points is a number between 0..100" do
