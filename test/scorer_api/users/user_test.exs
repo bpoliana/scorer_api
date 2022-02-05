@@ -5,12 +5,13 @@ defmodule ScorerApi.Users.UserTest do
 
   alias ScorerApi.Users.User
 
-  @invalid_points_number %{points: 182}
+  @valid_params %{points: 13}
+  @invalid_params %{points: 182}
 
   describe "changeset/2" do
     test "validates changeset" do
       user = insert(:user)
-      user_params = %{points: 13}
+      user_params = @valid_params
 
       assert changeset = %Ecto.Changeset{valid?: true} = User.changeset(%User{}, user_params)
       changes = changeset.changes
@@ -25,7 +26,7 @@ defmodule ScorerApi.Users.UserTest do
     end
 
     test "validates that points is a number between 0..100" do
-      errors = User.changeset(%User{}, @invalid_points_number)
+      errors = User.changeset(%User{}, @invalid_params)
 
       assert {"is invalid", [validation: inclusion, enum: 0..100]} = errors.errors[:points]
     end
