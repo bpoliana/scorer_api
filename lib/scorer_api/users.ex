@@ -18,7 +18,7 @@ defmodule ScorerApi.Users do
     |> Repo.update()
   end
 
-  def list_users do
+  def list_all do
     Repo.all(User)
   end
 
