@@ -44,7 +44,6 @@ defmodule ScorerApi.UsersTest do
       assert user.points == @valid_params.points
     end
 
-
     test "list_all/0 returns all users" do
       user = insert!(:user, %{points: 42})
 
