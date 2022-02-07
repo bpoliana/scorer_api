@@ -1,6 +1,8 @@
 defmodule ScorerApiWeb.Router do
   use ScorerApiWeb, :router
 
+  alias ScorerApiWeb.UserController
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -16,7 +18,7 @@ defmodule ScorerApiWeb.Router do
   scope "/", ScorerApiWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", UserController, :index
   end
 
   # Other scopes may use custom stacks.
