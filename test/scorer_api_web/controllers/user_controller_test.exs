@@ -4,8 +4,6 @@ defmodule ScorerApiWeb.UserControllerTest do
 
   import ScorerApi.Factory
 
-  # setup :set_user
-
   describe "index" do
     test "should list an empty list of users", %{conn: conn} do
       response =
@@ -14,17 +12,6 @@ defmodule ScorerApiWeb.UserControllerTest do
         |> json_response(200)
 
       assert response == %{"data" => []}
-    end
-
-    test "should list users and timestamp", %{conn: conn} do
-      %{conn: assign(conn, :user, build(:user))}
-
-      response =
-        conn
-        |> get(Routes.user_path(conn, :index))
-        |> json_response(200)
-
-      assert response == %{"data" => [], "timestamp" => nil}
     end
   end
 end
