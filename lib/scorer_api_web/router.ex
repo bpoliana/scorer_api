@@ -17,10 +17,9 @@ defmodule ScorerApiWeb.Router do
 
   scope "/", ScorerApiWeb do
     pipe_through :browser
-
-    get "/", UserController, :index
   end
 
+  get "/", UserController, :index
   # Other scopes may use custom stacks.
   # scope "/api", ScorerApiWeb do
   #   pipe_through :api
