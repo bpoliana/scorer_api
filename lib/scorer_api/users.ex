@@ -22,13 +22,13 @@ defmodule ScorerApi.Users do
     Repo.all(User)
   end
 
-  def get_user_by_points(points) do
+  def find_by_points(points) do
     query =
       from(
         user in User,
         where: user.points >= ^points,
         order_by: [:points],
-        limit: 2
+        limit: 10
       )
 
     Repo.all(query)

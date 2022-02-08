@@ -1,8 +1,6 @@
 defmodule ScorerApi.Users.UserTest do
   use ScorerApi.DataCase
 
-  import ScorerApi.Factory
-
   alias ScorerApi.Users.User
 
   @valid_params %{points: 13}
@@ -10,7 +8,6 @@ defmodule ScorerApi.Users.UserTest do
 
   describe "changeset/2" do
     test "validates changeset" do
-      user = insert(:user)
       user_params = @valid_params
 
       assert changeset = %Ecto.Changeset{valid?: true} = User.changeset(%User{}, user_params)
@@ -28,7 +25,7 @@ defmodule ScorerApi.Users.UserTest do
     test "validates that points is a number between 0..100" do
       errors = User.changeset(%User{}, @invalid_params)
 
-      assert {"is invalid", [validation: inclusion, enum: 0..100]} = errors.errors[:points]
+      assert {"is invalid", [validation: _inclusion, enum: 0..100]} = errors.errors[:points]
     end
   end
 end

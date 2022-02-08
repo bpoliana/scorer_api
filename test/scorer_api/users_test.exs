@@ -26,7 +26,7 @@ defmodule ScorerApi.UsersTest do
     test "get_user_by_points/1 returns a user with the given points" do
       user = insert!(:user, @valid_params)
 
-      assert [user] == Users.get_user_by_points(@valid_params.points)
+      assert [user] == Users.find_by_points(@valid_params.points)
       assert @valid_params.points == user.points
     end
 
