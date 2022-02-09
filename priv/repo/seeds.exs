@@ -12,4 +12,4 @@
 
 alias ScorerApi.Users
 
-Enum.map(1..1_000, fn _ -> Users.create(%{points: 0}) end)
+Enum.map(1..1_000, fn _ -> Users.create(%{points: Enum.random(0..100)}) end)
