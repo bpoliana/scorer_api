@@ -12,12 +12,6 @@ defmodule ScorerApi.Users do
     |> Repo.insert()
   end
 
-  def update(%User{} = user, params) do
-    user
-    |> User.changeset(params)
-    |> Repo.update()
-  end
-
   def list_all do
     Repo.all(User)
   end
@@ -32,5 +26,10 @@ defmodule ScorerApi.Users do
       )
 
     {:ok, Repo.all(query)}
+  end
+
+  def update_all do
+    update(User, set: [points: fragment("floor(random()*100)")])
+    |> Repo.update_all([])
   end
 end
