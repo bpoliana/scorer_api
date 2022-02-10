@@ -3,6 +3,7 @@ defmodule ScorerApi.ScorerServer do
 
   alias ScorerApi.Users
 
+  @timeout 15000
   # Client
 
   def via_tuple(name), do: {:via, Registry, {Registry.ScorerServer, name}}
@@ -12,7 +13,7 @@ defmodule ScorerApi.ScorerServer do
 
   def init(_name) do
     state = %{max_number: 80, timestamp: nil}
-    {:ok, state}
+    {:ok, state, @timeout}
   end
 
   # Server (callbacks)
@@ -51,7 +52,7 @@ defmodule ScorerApi.ScorerServer do
   end
 
   defp reply_success(state_data, reply, %{users: users}),
-    do: {:reply, reply, %{users: users, timestamp: state_data.timestamp}}
+    do: {:reply, reply, %{users: users, timestamp: state_data.timestamp}, @timeout}
 
   defp schedule_work do
     # Scheduling the work to happen every minute
