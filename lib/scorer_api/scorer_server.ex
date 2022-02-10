@@ -17,28 +17,23 @@ defmodule ScorerApi.ScorerServer do
     do: GenServer.call(server, {:get_users, name})
 
   def handle_call({:get_users, name}, _from, state_data) do
-    IO.inspect(Users.list_by_punctuation(state_data.max_number, 2))
-    # TO-DO create a get_users method that returns the right pattern matching
     with {:ok, users} <- Users.list_by_punctuation(state_data.max_number, 2) do
       state_data
-      |> update_timestamps()
-      |> reply_success(:ok, users)
+      |> update_timestamp()
+      |> reply_success(:ok, %{users: users})
+      |> IO.inspect()
     else
       :error -> {:reply, :error, state_data}
     end
   end
 
-  defp save_last_timestamps(state_data) do
-    %{max_number: max_number, timestamp: old_timestamp} = state_data
+  defp update_timestamp(state_data) do
+    current_timestamp =
+      NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second) |> NaiveDateTime.to_string()
+
+    IO.inspect(%{state_data | timestamp: current_timestamp})
   end
 
-  defp update_timestamps(state_data) do
-    %{
-      max_number: state_data.max_number,
-      timestamp:
-        NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second) |> NaiveDateTime.to_string()
-    }
-  end
-
-  defp reply_success(state_data, reply, users), do: {:reply, reply, users}
+  defp reply_success(state_data, reply, %{users: users}),
+    do: {:reply, reply, %{users: users, timestamp: state_data.timestamp}}
 end

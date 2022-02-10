@@ -23,10 +23,10 @@ defmodule ScorerApi.UsersTest do
       assert {:error, %Ecto.Changeset{}} = Users.create(@invalid_params)
     end
 
-    test "get_user_by_points/1 returns a user with the given points" do
+    test "list_by_punctuation/1 returns a user with the given points" do
       user = insert!(:user, @valid_params)
 
-      assert [user] == Users.list_by_punctuation(@valid_params.points, 1)
+      assert {:ok, [user]} == Users.list_by_punctuation(@valid_params.points, 1)
       assert @valid_params.points == user.points
     end
 

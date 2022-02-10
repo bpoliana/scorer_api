@@ -31,6 +31,6 @@ defmodule ScorerApi.Users do
         limit: ^limit
       )
 
-    Repo.all(query)
+    {:ok, Repo.all(query)}
   end
 end
