@@ -1,9 +1,11 @@
 defmodule ScorerApi.ScorerServer do
   use GenServer
 
+  require Logger
+
   alias ScorerApi.Users
 
-  @timeout 15000
+  @timeout 15_000
   # Client
 
   def via_tuple(name), do: {:via, Registry, {Registry.ScorerServer, name}}
@@ -11,6 +13,7 @@ defmodule ScorerApi.ScorerServer do
   def start_link(name) when is_binary(name),
     do: GenServer.start_link(__MODULE__, name, name: via_tuple(name))
 
+  @impl true
   def init(_name) do
     state = %{max_number: 80, timestamp: nil}
     {:ok, state, @timeout}
@@ -23,20 +26,23 @@ defmodule ScorerApi.ScorerServer do
 
   @impl true
   def handle_call({:get_users, name}, _from, state_data) do
-    with {:ok, users} <- Users.list_by_punctuation(state_data.max_number, 2) do
-      state_data
-      |> update_timestamp()
-      |> reply_success(:ok, %{users: users})
-      |> IO.inspect()
-    else
-      :error -> {:reply, :error, state_data}
-    end
+    {:ok, users} = Users.list_by_punctuation(state_data.max_number, 2)
+
+    IO.inspect(users)
+
+    state_data
+    |> update_timestamp()
+    |> log_info(:get_users, name)
+    |> reply_success(:ok, %{users: users})
   end
 
   @impl true
   def handle_info(:update, state_data) do
-    IO.puts("this message has been handled by handle_info/2, matching on :update")
     new_max_number = Enum.random(0..100)
+
+    Logger.info("handle_info/2, matching on :update with:
+                  max_number: #{new_max_number}}, timestamp: #{state_data.timestamp}")
+
     Users.update_all()
 
     schedule_work()
@@ -53,6 +59,13 @@ defmodule ScorerApi.ScorerServer do
 
   defp reply_success(state_data, reply, %{users: users}),
     do: {:reply, reply, %{users: users, timestamp: state_data.timestamp}, @timeout}
+
+  defp log_info(state_data, message, name) do
+    Logger.info("handle_call/4 of process #{name}, matching on :#{message} with:
+                  max_number: #{state_data.max_number}}, timestamp: #{state_data.timestamp}")
+
+    state_data
+  end
 
   defp schedule_work do
     # Scheduling the work to happen every minute
