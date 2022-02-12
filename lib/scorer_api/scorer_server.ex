@@ -34,8 +34,6 @@ defmodule ScorerApi.ScorerServer do
   def handle_call({:get_users, name}, _from, state_data) do
     {:ok, users} = Users.list_by_punctuation(state_data.max_number, 2)
 
-    IO.inspect(users)
-
     state_data
     |> update_timestamp()
     |> log_info(:get_users, name)
