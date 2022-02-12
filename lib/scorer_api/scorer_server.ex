@@ -1,4 +1,9 @@
 defmodule ScorerApi.ScorerServer do
+  @moduledoc """
+    The module ScorerServer uses GenServer and implements its the callbacks
+    that retrieves two users with at least the max_number of the server and timestamp
+  """
+
   use GenServer
 
   require Logger
@@ -6,6 +11,7 @@ defmodule ScorerApi.ScorerServer do
   alias ScorerApi.Users
 
   @timeout 15_000
+
   # Client
 
   def via_tuple(name), do: {:via, Registry, {Registry.ScorerServer, name}}
@@ -48,6 +54,13 @@ defmodule ScorerApi.ScorerServer do
     schedule_work()
 
     {:noreply, %{max_number: new_max_number, timestamp: state_data.timestamp}}
+  end
+
+  @impl true
+  def handle_info(:timeout, state_data) do
+    Logger.info("Terminating with :timeout")
+
+    {:noreply, state_data}
   end
 
   defp update_timestamp(state_data) do
