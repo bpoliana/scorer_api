@@ -15,7 +15,8 @@ defmodule ScorerApi.Application do
       {Phoenix.PubSub, name: ScorerApi.PubSub},
       # Start the Endpoint (http/https)
       ScorerApiWeb.Endpoint,
-      {Registry, keys: :unique, name: Registry.ScorerServer}
+      {Registry, keys: :unique, name: Registry.ScorerServer},
+      ScorerApi.ScorerServer
       # Start a worker by calling: ScorerApi.Worker.start_link(arg)
       # {ScorerApi.Worker, arg}
     ]
