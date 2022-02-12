@@ -16,7 +16,7 @@ defmodule ScorerApi.ScorerServer do
 
   def via_tuple(name), do: {:via, Registry, {Registry.ScorerServer, name}}
 
-  def start_link(name) when is_binary(name),
+  def start_link(name),
     do: GenServer.start_link(__MODULE__, name, name: via_tuple(name))
 
   @impl true
