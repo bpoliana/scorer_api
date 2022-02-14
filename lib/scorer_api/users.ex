@@ -35,7 +35,12 @@ defmodule ScorerApi.Users do
   end
 
   def update_all do
-    update(User, set: [points: fragment("floor(random()*100)")])
+    update(User,
+      set: [
+        points: fragment("floor(random()*100)"),
+        updated_at: fragment("now()")
+      ]
+    )
     |> Repo.update_all([])
   end
 end
