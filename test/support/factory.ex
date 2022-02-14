@@ -13,7 +13,7 @@ defmodule ScorerApi.Factory do
   end
 
   def build(:user) do
-    %User{ points: 33 }
+    %User{points: 33}
   end
 
   def insert!(factory_name, params \\ []) do
@@ -25,6 +25,6 @@ defmodule ScorerApi.Factory do
   def insert(:user) do
     build(:user, %{points: 29})
     |> Map.from_struct()
-    |> Users.create()
+    |> Users.create_user()
   end
 end

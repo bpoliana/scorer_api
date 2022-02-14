@@ -6,13 +6,13 @@ defmodule ScorerApi.Users do
   import Ecto.Query, warn: false
   alias ScorerApi.{Repo, Users.User}
 
-  def create(params \\ %{}) do
+  def create_user(params \\ %{}) do
     %User{}
     |> User.changeset(params)
     |> Repo.insert()
   end
 
-  def update(%User{} = user, params) do
+  def update_user(%User{} = user, params) do
     user
     |> User.changeset(params)
     |> Repo.update()
@@ -31,6 +31,11 @@ defmodule ScorerApi.Users do
         limit: ^limit
       )
 
-    Repo.all(query)
+    {:ok, Repo.all(query)}
+  end
+
+  def update_all do
+    update(User, set: [points: fragment("floor(random()*100)")])
+    |> Repo.update_all([])
   end
 end
