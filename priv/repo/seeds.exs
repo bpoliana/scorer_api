@@ -10,6 +10,16 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias ScorerApi.Users
+alias ScorerApi.{Repo, Users.User}
 
-Enum.map(1..1_000, fn _ -> Users.create(%{points: Enum.random(0..100)}) end)
+users =
+  Enum.map(1..1_000_000, fn _ ->
+    date_time = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    %{points: 0, inserted_at: date_time, updated_at: date_time}
+  end)
+
+list_of_chunks = Enum.chunk_every(users, 21_600)
+
+Enum.each(list_of_chunks, fn chunk ->
+  Repo.insert_all(User, chunk)
+end)

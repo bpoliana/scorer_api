@@ -21,7 +21,7 @@ defmodule ScorerApi.ScorerServer do
 
   @impl true
   def init(_name) do
-    state = %{max_number: 80, timestamp: nil}
+    state = %{max_number: Enum.random(0..100), timestamp: nil}
     {:ok, state, @timeout}
   end
 
@@ -34,6 +34,9 @@ defmodule ScorerApi.ScorerServer do
   def handle_call({:get_users, name}, _from, state_data) do
     {:ok, users} = Users.list_by_punctuation(state_data.max_number, 2)
 
+    # credo:disable-for-next-line
+    IO.inspect(users)
+
     state_data
     |> update_timestamp()
     |> log_info(:get_users, name)
@@ -42,11 +45,13 @@ defmodule ScorerApi.ScorerServer do
 
   @impl true
   def handle_info(:update, state_data) do
+    Logger.info("Starting update...")
     new_max_number = Enum.random(0..100)
 
     Logger.info("handle_info/2, matching on :update with:
-                  max_number: #{new_max_number}}, timestamp: #{state_data.timestamp}")
+                  max_number: #{new_max_number}, timestamp: #{state_data.timestamp}")
 
+    Logger.info("Updating all users...")
     Users.update_all()
 
     schedule_work()
@@ -72,8 +77,9 @@ defmodule ScorerApi.ScorerServer do
     do: {:reply, reply, %{users: users, timestamp: state_data.timestamp}, @timeout}
 
   defp log_info(state_data, message, name) do
-    Logger.info("handle_call/4 of process #{name}, matching on :#{message} with:
-                  max_number: #{state_data.max_number}}, timestamp: #{state_data.timestamp}")
+    Logger.info("Updated timestamp: #{state_data.timestamp}")
+    Logger.info("handle_call/4 called by #{name} matching on :#{message} with:
+                  max_number: #{state_data.max_number}, timestamp: #{state_data.timestamp}")
 
     state_data
   end
