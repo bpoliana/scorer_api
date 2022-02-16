@@ -9,7 +9,7 @@ defmodule ScorerApiWeb.UserControllerTest do
   end
 
   describe "index/2" do
-    test "returns an empty list of users", %{conn: conn} do
+    test "returns an empty list of users and timestamp nil in first call", %{conn: conn} do
       response =
         conn
         |> get(Routes.user_path(conn, :index))
@@ -21,15 +21,15 @@ defmodule ScorerApiWeb.UserControllerTest do
              }
     end
 
-    test "returns a list with one user", %{conn: conn} do
-      user = insert!(:user, %{points: 42})
+    test "returns a list with of users and the previous timestamp", %{conn: conn} do
+      conn = get(conn, Routes.user_path(conn, :index))
 
       response =
         conn
         |> get(Routes.user_path(conn, :index))
         |> json_response(200)
 
-      assert response["users"] == [%{"id" => user.id, "points" => user.points}]
+      assert is_list(response["users"])
       assert is_binary(response["timestamp"])
     end
   end
