@@ -12,13 +12,15 @@
 
 alias ScorerApi.{Repo, Users.User}
 
+IO.puts("Running seeds...")
+
 users =
   Enum.map(1..1_000_000, fn _ ->
     date_time = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     %{points: 0, inserted_at: date_time, updated_at: date_time}
   end)
 
-list_of_chunks = Enum.chunk_every(users, 21_600)
+list_of_chunks = Enum.chunk_every(users, 16_000)
 
 Enum.each(list_of_chunks, fn chunk ->
   Repo.insert_all(User, chunk)
