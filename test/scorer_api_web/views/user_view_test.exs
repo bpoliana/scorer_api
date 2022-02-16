@@ -9,11 +9,12 @@ defmodule ScorerApiWeb.UserViewTest do
     user = insert!(:user, %{points: 33})
 
     assert %{
-             data: [%{id: user.id, points: user.points}]
+             users: [%{id: user.id, points: user.points}],
+             timestamp: nil
            } ==
              UserView.render(
                "index.json",
-               %{users: [user]}
+               %{users: [user], timestamp: nil}
              )
   end
 end
