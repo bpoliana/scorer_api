@@ -14,8 +14,6 @@ defmodule ScorerApi.ScorerServer do
 
   # Client
 
-  def via_tuple(name), do: {:via, Registry, {Registry.ScorerServer, name}}
-
   @impl true
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: ScorerServer)
 
