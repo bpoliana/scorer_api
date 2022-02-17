@@ -20,8 +20,10 @@ users =
     %{points: 0, inserted_at: date_time, updated_at: date_time}
   end)
 
-list_of_chunks = Enum.chunk_every(users, 16_000)
+list_of_chunks = Enum.chunk_every(users, 21_600)
 
 Enum.each(list_of_chunks, fn chunk ->
   Repo.insert_all(User, chunk)
 end)
+
+IO.puts("Seeds ran successfully!")
