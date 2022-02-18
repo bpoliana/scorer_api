@@ -1,12 +1,12 @@
 defmodule ScorerApiWeb.UserController do
   use ScorerApiWeb, :controller
 
-  alias ScorerApi.ScorerServer
+  alias ScorerApi.Api
 
   action_fallback ScorerApiWeb.FallbackController
 
   def index(conn, _params) do
-    %{users: users, timestamp: timestamp} = ScorerServer.get_users()
+    %{users: users, timestamp: timestamp} = Api.get_users()
 
     render(conn, "index.json", %{users: users, timestamp: timestamp})
   end

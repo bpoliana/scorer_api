@@ -1,8 +1,10 @@
-defmodule ScorerApi.ScorerServer do
+defmodule ScorerApi.Servers.ScorerServer do
   @moduledoc """
     The module ScorerServer uses GenServer and implements its the callbacks
-    that retrieves two users with at least the max_number of the server and timestamp
+    that retrieves two users with at least the max_number of the server and timestamp.
+    It uses the UsersServer behaviour definition.
   """
+  @behaviour ScorerApi.Servers.UsersServer
 
   use GenServer
 
@@ -14,7 +16,6 @@ defmodule ScorerApi.ScorerServer do
 
   # Client
 
-  @impl true
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: ScorerServer)
 
   @impl true
@@ -30,6 +31,7 @@ defmodule ScorerApi.ScorerServer do
 
   # Server (callbacks)
 
+  @impl ScorerApi.Servers.UsersServer
   def get_users(), do: GenServer.call(ScorerServer, :get_users)
 
   @impl true
