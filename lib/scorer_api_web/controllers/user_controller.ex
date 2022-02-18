@@ -1,7 +1,7 @@
 defmodule ScorerApiWeb.UserController do
   use ScorerApiWeb, :controller
 
-  alias ScorerApi.{ScorerServer, Users}
+  alias ScorerApi.ScorerServer
 
   action_fallback ScorerApiWeb.FallbackController
 
