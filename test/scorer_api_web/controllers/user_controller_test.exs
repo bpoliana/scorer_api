@@ -13,7 +13,7 @@ defmodule ScorerApiWeb.UserControllerTest do
 
   describe "index/2" do
     test "returns an empty list of users and timestamp nil in first call", %{conn: conn} do
-      expect(ScorerServerMock, :get_users, fn ->
+      expect(ScorerWorkerMock, :get_users, fn ->
         {:ok, %{users: [], timestamp: nil}}
       end)
 
@@ -28,7 +28,7 @@ defmodule ScorerApiWeb.UserControllerTest do
     test "returns a list with of users and the previous timestamp", %{conn: conn} do
       user_1 = insert!(:user, points: 100)
 
-      expect(ScorerServerMock, :get_users, fn ->
+      expect(ScorerWorkerMock, :get_users, fn ->
         {:ok, %{users: [user_1], timestamp: "2022-02-18 04:01:08"}}
       end)
 
@@ -46,7 +46,7 @@ defmodule ScorerApiWeb.UserControllerTest do
       user_2 = insert!(:user, points: 100)
       user_3 = insert!(:user, points: 100)
 
-      expect(ScorerServerMock, :get_users, fn ->
+      expect(ScorerWorkerMock, :get_users, fn ->
         {:ok, %{users: [user_1, user_2], timestamp: "2022-02-18 04:01:08"}}
       end)
 

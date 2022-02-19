@@ -1,10 +1,10 @@
-defmodule ScorerApi.Servers.ScorerServer do
+defmodule ScorerApi.Workers.ScorerWorker do
   @moduledoc """
-    The module ScorerServer uses GenServer and implements its the callbacks
+    The module ScorerWorker uses GenServer and implements its the callbacks
     that retrieves two users with at least the max_number of the server and timestamp.
     It uses the UsersServer behaviour definition.
   """
-  @behaviour ScorerApi.Servers.UsersServer
+  @behaviour ScorerApi.Workers.UsersWorker
 
   use GenServer
 
@@ -16,11 +16,11 @@ defmodule ScorerApi.Servers.ScorerServer do
 
   # Client
 
-  def start_link(_), do: GenServer.start_link(__MODULE__, [], name: ScorerServer)
+  def start_link(_), do: GenServer.start_link(__MODULE__, [], name: ScorerWorker)
 
   @impl true
   def init(_) do
-    Logger.info("Initializing ScorerServer...")
+    Logger.info("Initializing ScorerWorker...")
 
     schedule_work()
 
@@ -31,8 +31,8 @@ defmodule ScorerApi.Servers.ScorerServer do
 
   # Server (callbacks)
 
-  @impl ScorerApi.Servers.UsersServer
-  def get_users(), do: GenServer.call(ScorerServer, :get_users)
+  @impl ScorerApi.Workers.UsersWorker
+  def get_users(), do: GenServer.call(ScorerWorker, :get_users)
 
   @impl true
   def handle_call(:get_users, _from, state_data) do

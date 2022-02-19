@@ -15,7 +15,7 @@ defmodule ScorerApi.Application do
       {Phoenix.PubSub, name: ScorerApi.PubSub},
       # Start the Endpoint (http/https)
       ScorerApiWeb.Endpoint,
-      ScorerApi.Servers.ScorerServer
+      ScorerApi.Workers.ScorerWorker
       # Start a worker by calling: ScorerApi.Worker.start_link(arg)
       # {ScorerApi.Worker, arg}
     ]

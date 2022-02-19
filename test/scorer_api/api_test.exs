@@ -9,7 +9,7 @@ defmodule ScorerApi.ApiTest do
 
   describe "get_users/0" do
     test "returns an empty list of users and timestamp nil in first call" do
-      expect(ScorerServerMock, :get_users, fn ->
+      expect(ScorerWorkerMock, :get_users, fn ->
         {:reply, %{timestamp: nil, users: []}}
       end)
 
@@ -19,7 +19,7 @@ defmodule ScorerApi.ApiTest do
     test "returns a list with of users and the previous timestamp" do
       user_1 = %{id: 1, points: 100}
 
-      expect(ScorerServerMock, :get_users, fn ->
+      expect(ScorerWorkerMock, :get_users, fn ->
         {:reply, %{timestamp: "2022-02-18 04:01:08", users: [user_1]}}
       end)
 
@@ -31,7 +31,7 @@ defmodule ScorerApi.ApiTest do
       user_2 = %{id: 2, points: 100}
       user_3 = %{id: 3, points: 100}
 
-      expect(ScorerServerMock, :get_users, fn ->
+      expect(ScorerWorkerMock, :get_users, fn ->
         {:reply, %{timestamp: "2022-02-18 04:01:08", users: [user_1, user_2]}}
       end)
 
