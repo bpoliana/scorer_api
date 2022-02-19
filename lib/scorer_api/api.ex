@@ -1,4 +1,7 @@
 defmodule ScorerApi.Api do
+  @moduledoc """
+    This module implements the call to ScorerWorker.get_users()
+  """
   alias ScorerApi.Workers.ScorerWorker
 
   def get_users() do
