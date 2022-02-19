@@ -6,7 +6,7 @@ defmodule ScorerApiWeb.UserController do
   action_fallback ScorerApiWeb.FallbackController
 
   def index(conn, _params) do
-    %{users: users, timestamp: timestamp} = Api.get_users()
+    {:ok, %{users: users, timestamp: timestamp}} = Api.get_users()
 
     render(conn, "index.json", %{users: users, timestamp: timestamp})
   end
