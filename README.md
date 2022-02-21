@@ -1,6 +1,6 @@
 # ScorerApi
 
-> A Phoenix Api app, with a single endpoint. This app returns at maximum 2 (it can return less), users with more than a random number of points.
+> A Phoenix Api app with a single endpoint. This app returns at maximum 2 (it can return less), users with more than a random number of points.
 
 For running the project locally, follow the instructions on Running section. It is also avaialable in [scorerapi.gigalixirapp.com](https://scorerapi.gigalixirapp.com/) deployed with Gigalixir. 
 
@@ -89,6 +89,7 @@ mix test.coverage
 
 ## Improvements
 
+  * Improve tests coverage
   * Automate CI with Gigalixir
   * Fix Gigalixir databases from 10_000 users to have 1_000_000 users
   * Add a code coverage (like codecov, for example)
