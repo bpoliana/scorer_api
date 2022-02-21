@@ -18,6 +18,12 @@ defmodule ScorerApi.Workers.ScorerWorker do
 
   def start_link(_), do: GenServer.start_link(__MODULE__, [], name: ScorerWorker)
 
+  @doc """
+    Defines the worker initializes, schedules the update to run 1 minute after it is initialized.
+    The initialized state build has:
+      - `max_number`: random number [0 - 100]
+      - `timestamp`: nil
+  """
   @impl true
   def init(_) do
     Logger.info("Initializing ScorerWorker...")
@@ -34,13 +40,16 @@ defmodule ScorerApi.Workers.ScorerWorker do
   @impl ScorerApi.Workers.UsersWorker
   def get_users(), do: GenServer.call(ScorerWorker, :get_users)
 
+  @doc """
+    This `handle_call`:
+    - Queries the database for all users with more points than `max_number` but only retrieve a max of 2 users.
+    - Updates the genserver state `timestamp` with the current timestamp
+    - Returns the users just retrieved from the database, as well as the timestamp of the **previous `handle_call`**
+  """
   @impl true
   def handle_call(:get_users, _from, state_data) do
     %{max_number: previous_max_number, timestamp: previous_timestamp} = state_data
     {:ok, users} = Users.list_by_punctuation(previous_max_number, 2)
-
-    # credo:disable-for-next-line
-    IO.inspect(users)
 
     updated_state = update_timestamp(state_data)
 
@@ -53,6 +62,11 @@ defmodule ScorerApi.Workers.ScorerWorker do
     {:reply, %{users: users, timestamp: previous_timestamp}, updated_state, @timeout}
   end
 
+  @doc """
+    This `handle_info` defines the `max_number` on a range of [0-100]
+    that the users must have at least, updates all users with new `max_number`.
+    Returns the new `max_number` and the timestamp
+  """
   @impl true
   def handle_info(:update, state_data) do
     Logger.info("Starting update...")
