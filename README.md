@@ -4,8 +4,6 @@
 
 For running the project locally, follow the instructions on Running section. It is also avaialable in [scorerapi.gigalixirapp.com](https://scorerapi.gigalixirapp.com/) deployed with Gigalixir. 
 
-## Project porpuse
-
 * This application has a single `GET` endpoint which returns:
   - at max 2 users with a maximum number, which is randomly drawned by a `Genserver`, which is called `ScorerWorker`;
   - timestamp (which indicates the last time someone queried the genserver, defaults to nil for the first query);
