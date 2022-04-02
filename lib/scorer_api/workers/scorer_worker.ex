@@ -16,7 +16,9 @@ defmodule ScorerApi.Workers.ScorerWorker do
 
   # Client
 
-  def start_link(_), do: GenServer.start_link(__MODULE__, [], name: ScorerWorker)
+  def start_link(options), do: GenServer.start_link(__MODULE__, [], name: ScorerWorker)
+
+  # Keyword.get(options, :name, __MODULE__)
 
   @doc """
     Defines the worker initializes, schedules the update to run 1 minute after it is initialized.
